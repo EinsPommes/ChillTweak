@@ -33,3 +33,9 @@ Verbesserungsvorschläge und Pull Requests sind willkommen!
 3. Committe deine Änderungen
 4. Push zu dem Branch
 5. Öffne einen Pull Request
+
+### Option 2: Manuelle Installation
+1. Lade die `chillTweak.ps1` Datei herunter
+2. Öffne PowerShell als Administrator
+3. Navigiere zum Download-Ordner
+4. Führe aus:
