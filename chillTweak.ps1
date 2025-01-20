@@ -2,6 +2,31 @@
 # Autor: [Jannik/Mika]
 # Version: 1.0
 
+# Self-elevate to admin if not already running as admin
+if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    $arguments = "& '" + $MyInvocation.MyCommand.Path + "'"
+    Start-Process powershell -Verb runAs -ArgumentList $arguments
+    Exit
+}
+
+# Überprüfe ob das Skript direkt ausgeführt wird oder heruntergeladen wurde
+$scriptPath = $MyInvocation.MyCommand.Path
+if (-not $scriptPath) {
+    $tempFile = "$env:TEMP\chillTweak.ps1"
+    try {
+        # Download das Skript von GitHub 
+        $scriptUrl = "https://raw.githubusercontent.com/einspommes/chillTweak/main/chillTweak.ps1"
+        Invoke-WebRequest -Uri $scriptUrl -OutFile $tempFile
+        & $tempFile
+        Remove-Item $tempFile
+        Exit
+    }
+    catch {
+        Write-Host "[!] Fehler beim Herunterladen des Skripts: $_" -ForegroundColor Red
+        Exit
+    }
+}
+
 # Farbdefinitionen
 $script:primaryColor = "Magenta"  # Pink
 $script:secondaryColor = "White"  # Weiß
@@ -118,11 +143,6 @@ function Show-Help {
 }
 
 # Hauptprogramm
-if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Host "[!] Bitte starte das Skript als Administrator!" -ForegroundColor Red
-    Exit
-}
-
 # Logging initialisieren
 $logPath = "$env:USERPROFILE\Documents\chillTweak_log.txt"
 Start-Transcript -Path $logPath -Append
