@@ -1,0 +1,37 @@
+{
+    "Language": "de",
+    "Theme": {
+        "Primary": "Magenta",
+        "Secondary": "White"
+    },
+    "Backup": {
+        "DefaultPath": "%USERPROFILE%\\Documents\\chillTweak_Backups",
+        "Encryption": true,
+        "MaxBackups": 5
+    },
+    "Updates": {
+        "AutoCheck": true,
+        "Channel": "stable"
+    },
+    "Performance": {
+        "PowerPlan": "High",
+        "VisualEffects": "Custom",
+        "GameMode": true
+    },
+    "Privacy": {
+        "DisableTelemetry": true,
+        "DisableTracking": true,
+        "BlockAds": false
+    },
+    "Cleanup": {
+        "TempFiles": true,
+        "RecycleBin": false,
+        "WindowsLogs": true
+    },
+    "CustomSoftware": [],
+    "LastBackupPath": "",
+    "LogRotation": {
+        "MaxSize": "5MB",
+        "BackupCount": 5
+    }
+} 

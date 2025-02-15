@@ -8,6 +8,8 @@ Ein moderner Windows Tweaker mit pink-weißem Design für schnelle und einfache 
 2. Diesen Befehl kopieren und einfügen:
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/einspommes/chillTweak/main/chillTweak.ps1" -UseBasicParsing | Invoke-Expression
 
+3. Skript ausführen:
+
 ## ✨ Features
 
 ### 🛡️ Privatsphäre
@@ -35,6 +37,8 @@ Automatische Installation von:
 - Benutzerordner sichern (Dokumente, Bilder, Desktop)
 - Registry-Einstellungen exportieren
 - Vollständige System-Backups erstellen
+- AES-256 Verschlüsselung der Backups
+- Sicherer Schlüssel-Export
 
 ## 📋 Voraussetzungen
 
@@ -42,6 +46,27 @@ Automatische Installation von:
 - PowerShell 5.1+
 - Administratorrechte
 - Internetverbindung
+
+## 📁 Projektstruktur
+
+```
+ChillTweak/
+├── chillTweak.ps1          # Hauptskript
+├── README.md               # Dokumentation
+├── modules/
+│   ├── core/
+│   │   ├── Config.ps1      # Konfigurationsfunktionen
+│   │   └── Security.ps1    # Sicherheitsfunktionen
+│   ├── system/
+│   │   ├── Backup.ps1      # Backup-Funktionen
+│   │   ├── Cleanup.ps1     # Aufräumfunktionen
+│   │   ├── Optimize.ps1    # Optimierungsfunktionen
+│   │   └── Software.ps1    # Software-Installation
+│   └── ui/
+│       └── Menu.ps1        # Menü und UI-Funktionen
+└── config/
+    └── settings.json       # Standardeinstellungen
+```
 
 ## 💡 Verwendung
 
@@ -78,6 +103,16 @@ Automatische Installation von:
 ### Kontakt
 - GitHub Issues für Bugs
 - Pull Requests für Features
+
+### Logging
+- Einfache Fehlerprotokollierung
+- Klare Fehlermeldungen
+- Benutzerfreundliche Statusmeldungen
+
+### Sicherheit
+- Verschlüsselte Backups mit AES-256
+- Sichere Zufallszahlengenerierung für Schlüssel
+- Automatische Schlüsselverwaltung
 
 ## 📄 Lizenz
 
