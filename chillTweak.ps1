@@ -3,7 +3,56 @@ param([switch]$TestMode)
 # chillTweak - Ein modularer Windows Tweaker
 # Version: 1.0
 
-# Module importieren
+# Basis-URL für Module
+$baseUrl = "https://raw.githubusercontent.com/einspommes/chillTweak/main"
+
+# Funktion zum Herunterladen von Modulen
+function Initialize-Modules {
+    # Erstelle Modulverzeichnisse
+    $moduleDirs = @(
+        "modules/core",
+        "modules/ui",
+        "modules/system",
+        "modules/security"
+    )
+
+    foreach ($dir in $moduleDirs) {
+        if (-not (Test-Path $dir)) {
+            New-Item -Path $dir -ItemType Directory -Force | Out-Null
+        }
+    }
+
+    # Module herunterladen
+    $moduleFiles = @(
+        "modules/core/Config.ps1",
+        "modules/ui/Menu.ps1",
+        "modules/system/Optimize.ps1",
+        "modules/system/Backup.ps1",
+        "modules/system/Cleanup.ps1",
+        "modules/system/Software.ps1",
+        "modules/security/Security.ps1"
+    )
+
+    foreach ($module in $moduleFiles) {
+        $moduleUrl = "$baseUrl/$module"
+        $localPath = $module
+
+        try {
+            Invoke-WebRequest -Uri $moduleUrl -OutFile $localPath -UseBasicParsing
+            Write-Host "[+] Modul heruntergeladen: $module" -ForegroundColor Green
+        }
+        catch {
+            Write-Host "[!] Fehler beim Herunterladen von $module" -ForegroundColor Red
+            Write-Host $_.Exception.Message -ForegroundColor Red
+            return $false
+        }
+    }
+
+    return $true
+}
+
+# Prüfe ob Module lokal existieren, wenn nicht, lade sie herunter
+$modulesExist = $true
 $moduleFiles = @(
     "modules/core/Config.ps1",
     "modules/ui/Menu.ps1",
@@ -13,6 +62,20 @@ $moduleFiles = @(
     "modules/system/Software.ps1",
     "modules/security/Security.ps1"
 )
+foreach ($module in $moduleFiles) {
+    if (-not (Test-Path $module)) {
+        $modulesExist = $false
+        break
+    }
+}
+
+if (-not $modulesExist) {
+    Write-Host "[*] Module werden heruntergeladen..." -ForegroundColor Cyan
+    if (-not (Initialize-Modules)) {
+        Write-Host "[!] Fehler beim Initialisieren der Module" -ForegroundColor Red
+        Exit
+    }
+}
 
 # Module laden
 foreach ($module in $moduleFiles) {
@@ -22,7 +85,7 @@ foreach ($module in $moduleFiles) {
     }
     try {
         . $module
-        Write-Host "[`u{2713}] Modul geladen: $module" -ForegroundColor Green
+        Write-Host "[+] Modul geladen: $module" -ForegroundColor Green
     }
     catch {
         Write-Host "[!] Fehler beim Laden von $module" -ForegroundColor Red
