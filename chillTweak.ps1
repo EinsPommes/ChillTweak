@@ -503,7 +503,7 @@ function Show-Help {
 "@ -ForegroundColor $secondaryColor
 }
 
-function Manage-WindowsUpdate {
+function Update-Windows {
     Write-Host "`n[*] Windows Update Manager..." -ForegroundColor $primaryColor
     
     Write-Host "`nWähle eine Option:" -ForegroundColor $secondaryColor
@@ -581,7 +581,7 @@ function Update-Drivers {
     
     # Treiber auflisten
     $drivers = Get-WmiObject Win32_PnPSignedDriver | 
-        Where-Object { $_.DeviceName -ne $null } |
+        Where-Object { $null -ne $_.DeviceName } |
         Select-Object DeviceName, DriverVersion
     
     # Anzeigen
@@ -618,7 +618,7 @@ do {
             Set-Language
             Save-Config 
         }
-        "8" { Manage-WindowsUpdate }
+        "8" { Update-Windows }
         "Q" { break }
         default { Write-Host "`n[!] Ungültige Eingabe" -ForegroundColor Red }
     }
