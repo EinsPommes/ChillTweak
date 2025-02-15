@@ -16,7 +16,7 @@ if (-not $scriptPath) {
     try {
         # Download das Skript von GitHub 
         $scriptUrl = "https://raw.githubusercontent.com/einspommes/chillTweak/main/chillTweak.ps1"
-        Invoke-WebRequest -Uri $scriptUrl -OutFile $tempFile
+        Invoke-WebRequest -Uri $scriptUrl -UseBasicParsing -OutFile $tempFile
         & $tempFile
         Remove-Item $tempFile
         Exit
@@ -31,13 +31,68 @@ if (-not $scriptPath) {
 $script:primaryColor = "Magenta"  # Pink
 $script:secondaryColor = "White"  # Weiß
 
+# Sprachdateien
+$script:Strings = @{
+    'de' = @{
+        'WelcomeMessage' = "Willkommen bei chillTweak!"
+        'SelectOption' = "Wähle eine Option"
+        'Success' = "Erfolgreich"
+        'Error' = "Fehler"
+        # ... weitere Übersetzungen ...
+    }
+    'en' = @{
+        'WelcomeMessage' = "Welcome to chillTweak!"
+        'SelectOption' = "Select an option"
+        'Success' = "Success"
+        'Error' = "Error"
+        # ... weitere Übersetzungen ...
+    }
+}
+
+# Sprachauswahl-Funktion
+function Set-Language {
+    Write-Host "`nSprache / Language:" -ForegroundColor $primaryColor
+    Write-Host "[1]" -ForegroundColor $primaryColor -NoNewline
+    Write-Host " Deutsch" -ForegroundColor $secondaryColor
+    Write-Host "[2]" -ForegroundColor $primaryColor -NoNewline
+    Write-Host " English" -ForegroundColor $secondaryColor
+    
+    $choice = Read-Host "`nWähle eine Option / Select an option"
+    
+    switch ($choice) {
+        "1" { $script:CurrentLanguage = 'de' }
+        "2" { $script:CurrentLanguage = 'en' }
+        default { $script:CurrentLanguage = 'de' }
+    }
+}
+
+# Funktion zum Abrufen von Strings
+function Get-LocalizedString {
+    param (
+        [string]$Key
+    )
+    return $Strings[$script:CurrentLanguage][$Key]
+}
+
 function Show-Banner {
     Clear-Host
+    $version = "1.0"
     Write-Host @"
     ╔═══════════════════════════════════════╗
     ║           c h i l l T w e a k          ║
+    ║              v$version                ║
     ╚═══════════════════════════════════════╝
 "@ -ForegroundColor $primaryColor
+
+    # Systeminformationen anzeigen
+    $os = Get-CimInstance Win32_OperatingSystem
+    $cpu = Get-CimInstance Win32_Processor
+    $ram = [math]::Round(($os.TotalVisibleMemorySize / 1MB), 2)
+    
+    Write-Host "`nSystem Info:" -ForegroundColor $secondaryColor
+    Write-Host "OS: $($os.Caption)" -ForegroundColor $primaryColor
+    Write-Host "CPU: $($cpu.Name)" -ForegroundColor $primaryColor
+    Write-Host "RAM: $ram GB" -ForegroundColor $primaryColor
 }
 
 function Show-Menu {
@@ -53,6 +108,8 @@ function Show-Menu {
     Write-Host " Backup erstellen" -ForegroundColor $secondaryColor
     Write-Host "[6]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " Hilfe anzeigen" -ForegroundColor $secondaryColor
+    Write-Host "[7]" -ForegroundColor $primaryColor -NoNewline
+    Write-Host " Sprache ändern" -ForegroundColor $secondaryColor
     Write-Host "[Q]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " Beenden" -ForegroundColor $secondaryColor
 }
@@ -69,10 +126,25 @@ function Disable-Telemetry {
     }
 }
 
+# Neue Funktion für Fortschrittsbalken
+function Show-Progress {
+    param (
+        [string]$Activity,
+        [int]$PercentComplete
+    )
+    Write-Progress -Activity $Activity -PercentComplete $PercentComplete -Status "$PercentComplete% abgeschlossen"
+}
+
 function Optimize-System {
     Write-Host "`n[*] Performance-Optimierung wird gestartet..." -ForegroundColor $primaryColor
     
     try {
+        $totalSteps = 5
+        $currentStep = 0
+
+        # Fortschritt anzeigen
+        Show-Progress -Activity "System-Optimierung" -PercentComplete (($currentStep++ / $totalSteps) * 100)
+        
         # Untermenü für Performance-Optimierungen
         Write-Host "`nWähle eine Performance-Option:" -ForegroundColor $secondaryColor
         Write-Host "[1]" -ForegroundColor $primaryColor -NoNewline
@@ -267,11 +339,15 @@ function Install-CommonSoftware {
             "VideoLAN.VLC"
         )
 
+        $totalApps = $software.Count
+        $currentApp = 0
+        
         foreach ($app in $software) {
+            Show-Progress -Activity "Software-Installation" -PercentComplete (($currentApp++ / $totalApps) * 100)
             Write-Host "Installing $app..." -ForegroundColor $secondaryColor
             winget install -e --id $app --accept-source-agreements --accept-package-agreements
         }
-
+        
         Write-Host "[✓] Software-Installation abgeschlossen" -ForegroundColor $secondaryColor
     }
     catch {
@@ -419,7 +495,44 @@ function Show-Help {
 "@ -ForegroundColor $secondaryColor
 }
 
+# Konfigurationsdatei
+$script:ConfigPath = "$env:USERPROFILE\Documents\chillTweak_config.json"
+
+function Save-Config {
+    $config = @{
+        Language = $script:CurrentLanguage
+        Theme = @{
+            Primary = $script:primaryColor
+            Secondary = $script:secondaryColor
+        }
+        CustomSoftware = $script:CustomSoftware
+        LastBackupPath = $script:LastBackupPath
+    }
+    
+    $config | ConvertTo-Json | Out-File $script:ConfigPath
+}
+
+function Load-Config {
+    if (Test-Path $script:ConfigPath) {
+        $config = Get-Content $script:ConfigPath | ConvertFrom-Json
+        $script:CurrentLanguage = $config.Language
+        $script:primaryColor = $config.Theme.Primary
+        $script:secondaryColor = $config.Theme.Secondary
+        $script:CustomSoftware = $config.CustomSoftware
+        $script:LastBackupPath = $config.LastBackupPath
+    }
+}
+
 # Hauptprogramm
+# Konfiguration laden
+Load-Config
+
+# Wenn keine Sprache gesetzt ist, Sprachauswahl anzeigen
+if (-not $script:CurrentLanguage) {
+    Set-Language
+    Save-Config
+}
+
 # Logging initialisieren
 $logPath = "$env:USERPROFILE\Documents\chillTweak_log.txt"
 Start-Transcript -Path $logPath -Append
@@ -436,6 +549,10 @@ do {
         "4" { Clear-SystemFiles }
         "5" { Backup-System }
         "6" { Show-Help }
+        "7" { 
+            Set-Language
+            Save-Config 
+        }
         "Q" { break }
         default { Write-Host "`n[!] Ungültige Eingabe" -ForegroundColor Red }
     }
