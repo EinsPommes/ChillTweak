@@ -61,7 +61,7 @@ function Set-Language {
     Write-Host "[2]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " English" -ForegroundColor $secondaryColor
     
-    $choice = Read-Host "`nWähle eine Option / Select an option"
+    $choice = Read-Host "`nWaehle eine Option / Select an option"
     
     switch ($choice) {
         "1" { $script:CurrentLanguage = 'de' }
@@ -106,13 +106,13 @@ function Show-Menu {
     Write-Host "[3]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " Software installieren" -ForegroundColor $secondaryColor
     Write-Host "[4]" -ForegroundColor $primaryColor -NoNewline
-    Write-Host " System aufräumen" -ForegroundColor $secondaryColor
+    Write-Host " System aufraeumen" -ForegroundColor $secondaryColor
     Write-Host "[5]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " Backup erstellen" -ForegroundColor $secondaryColor
     Write-Host "[6]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " Hilfe anzeigen" -ForegroundColor $secondaryColor
     Write-Host "[7]" -ForegroundColor $primaryColor -NoNewline
-    Write-Host " Sprache ändern" -ForegroundColor $secondaryColor
+    Write-Host " Sprache aendern" -ForegroundColor $secondaryColor
     Write-Host "[8]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " Windows Update Manager" -ForegroundColor $secondaryColor
     Write-Host "[Q]" -ForegroundColor $primaryColor -NoNewline
@@ -234,20 +234,20 @@ function Show-Help {
     Write-Host "   - Stoppt und deaktiviert Telemetrie-Dienste" -ForegroundColor $secondaryColor
     
     Write-Host "`n2. System optimieren" -ForegroundColor $primaryColor
-    Write-Host "   - Aktiviert Höchstleistungs-Energieplan" -ForegroundColor $secondaryColor
+    Write-Host "   - Aktiviert Hoechstleistungs-Energieplan" -ForegroundColor $secondaryColor
     Write-Host "   - Optimiert visuelle Effekte" -ForegroundColor $secondaryColor
     
     Write-Host "`n3. Software installieren" -ForegroundColor $primaryColor
-    Write-Host "   - Installiert gängige Programme (7-Zip, Notepad++, VLC)" -ForegroundColor $secondaryColor
+    Write-Host "   - Installiert Programme: 7-Zip, Notepad++, VLC" -ForegroundColor $secondaryColor
     
-    Write-Host "`n4. System aufräumen" -ForegroundColor $primaryColor
-    Write-Host "   - Löscht temporäre Dateien" -ForegroundColor $secondaryColor
+    Write-Host "`n4. System aufraeumen" -ForegroundColor $primaryColor
+    Write-Host "   - Loescht temporaere Dateien" -ForegroundColor $secondaryColor
     Write-Host "   - Leert Papierkorb" -ForegroundColor $secondaryColor
 
     Write-Host "`n5. Backup erstellen" -ForegroundColor $primaryColor
     Write-Host "   - Sichert wichtige Benutzerordner" -ForegroundColor $secondaryColor
     Write-Host "   - Exportiert Systemeinstellungen" -ForegroundColor $secondaryColor
-    Write-Host "   - Erstellt vollständige Backups" -ForegroundColor $secondaryColor
+    Write-Host "   - Erstellt vollstaendige Backups" -ForegroundColor $secondaryColor
 }
 
 # Konfigurationsfunktionen
