@@ -9,7 +9,7 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     Exit
 }
 
-# Überprüfe ob das Skript direkt ausgeführt wird oder heruntergeladen wurde
+# Überprüfe -> Ueberpruefe ob das Skript direkt ausgeführt wird oder heruntergeladen wurde
 $scriptPath = $MyInvocation.MyCommand.Path
 if (-not $scriptPath) {
     $tempFile = "$env:TEMP\chillTweak.ps1"
@@ -148,7 +148,7 @@ function Optimize-System {
         $currentStep = 0
         Show-Progress -Activity "System-Optimierung" -PercentComplete (($currentStep++ / $totalSteps) * 100)
         
-        Write-Host "`nWähle eine Performance-Option:" -ForegroundColor $secondaryColor
+        Write-Host "`nWaehle eine Performance-Option:" -ForegroundColor $secondaryColor
         Write-Host "[1]" -ForegroundColor $primaryColor -NoNewline
         Write-Host " Energieplan optimieren" -ForegroundColor $secondaryColor
         Write-Host "[2]" -ForegroundColor $primaryColor -NoNewline
@@ -162,7 +162,7 @@ function Optimize-System {
         Write-Host "[6]" -ForegroundColor $primaryColor -NoNewline
         Write-Host " Alle Optimierungen ausführen" -ForegroundColor $secondaryColor
         Write-Host "[7]" -ForegroundColor $primaryColor -NoNewline
-        Write-Host " Zurück zum Hauptmenü" -ForegroundColor $secondaryColor
+        Write-Host " Zurueck zum Hauptmenue" -ForegroundColor $secondaryColor
 
         $choice = Read-Host "`nWähle eine Option"
 
@@ -191,7 +191,7 @@ function Optimize-System {
 function Update-Windows {
     Write-Host "`n[*] Windows Update Manager..." -ForegroundColor $primaryColor
     try {
-        Write-Host "`nWähle eine Option:" -ForegroundColor $secondaryColor
+        Write-Host "`nWaehle eine Option:" -ForegroundColor $secondaryColor
         Write-Host "[1]" -ForegroundColor $primaryColor -NoNewline
         Write-Host " Updates suchen" -ForegroundColor $secondaryColor
         Write-Host "[2]" -ForegroundColor $primaryColor -NoNewline
@@ -301,10 +301,11 @@ if (-not $script:CurrentLanguage) {
 $logPath = "$env:USERPROFILE\Documents\chillTweak_log.txt"
 Start-Transcript -Path $logPath -Append
 
+# Hauptprogramm-Ende
 do {
     Show-Banner
     Show-Menu
-    $choice = Read-Host "`nWähle eine Option"
+    $choice = Read-Host "`nWaehle eine Option"
     
     switch ($choice) {
         "1" { Disable-Telemetry }
@@ -319,14 +320,16 @@ do {
         }
         "8" { Update-Windows }
         "Q" { break }
-        default { Write-Host "`n[!] Ungültige Eingabe" -ForegroundColor Red }
+        default { Write-Host "`n[!] Ungueltige Eingabe" -ForegroundColor Red }
     }
     
     if ($choice -ne "Q") {
-        Write-Host "`nDrücke eine Taste zum Fortfahren..." -ForegroundColor $secondaryColor
+        Write-Host "`nDruecke eine Taste zum Fortfahren..." -ForegroundColor $secondaryColor
         $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     }
 } while ($choice -ne "Q")
 
 Stop-Transcript
+
+# Programm beenden
 Write-Host "`n[*] Programm wird beendet. Logs wurden gespeichert in: $logPath" -ForegroundColor $primaryColor
