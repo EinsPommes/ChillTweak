@@ -229,29 +229,25 @@ function Update-Windows {
 }
 
 function Show-Help {
-    $helpText = @"
-`n[HILFE] chillTweak Funktionen:
+    Write-Host "`n[HILFE] chillTweak Funktionen:" -ForegroundColor $secondaryColor
+    Write-Host "`n1. Windows Telemetrie deaktivieren" -ForegroundColor $primaryColor
+    Write-Host "   - Stoppt und deaktiviert Telemetrie-Dienste" -ForegroundColor $secondaryColor
+    
+    Write-Host "`n2. System optimieren" -ForegroundColor $primaryColor
+    Write-Host "   - Aktiviert Höchstleistungs-Energieplan" -ForegroundColor $secondaryColor
+    Write-Host "   - Optimiert visuelle Effekte" -ForegroundColor $secondaryColor
+    
+    Write-Host "`n3. Software installieren" -ForegroundColor $primaryColor
+    Write-Host "   - Installiert gängige Programme (7-Zip, Notepad++, VLC)" -ForegroundColor $secondaryColor
+    
+    Write-Host "`n4. System aufräumen" -ForegroundColor $primaryColor
+    Write-Host "   - Löscht temporäre Dateien" -ForegroundColor $secondaryColor
+    Write-Host "   - Leert Papierkorb" -ForegroundColor $secondaryColor
 
-1. Windows Telemetrie deaktivieren
-   - Stoppt und deaktiviert Telemetrie-Dienste
-   
-2. System optimieren
-   - Aktiviert Höchstleistungs-Energieplan
-   - Optimiert visuelle Effekte
-   
-3. Software installieren
-   - Installiert gängige Programme (7-Zip, Notepad++, VLC)
-   
-4. System aufräumen
-   - Löscht temporäre Dateien
-   - Leert Papierkorb
-
-5. Backup erstellen
-   - Sichert wichtige Benutzerordner
-   - Exportiert Systemeinstellungen
-   - Erstellt vollständige Backups
-"@
-    Write-Host $helpText -ForegroundColor $secondaryColor
+    Write-Host "`n5. Backup erstellen" -ForegroundColor $primaryColor
+    Write-Host "   - Sichert wichtige Benutzerordner" -ForegroundColor $secondaryColor
+    Write-Host "   - Exportiert Systemeinstellungen" -ForegroundColor $secondaryColor
+    Write-Host "   - Erstellt vollständige Backups" -ForegroundColor $secondaryColor
 }
 
 # Konfigurationsfunktionen
