@@ -195,28 +195,6 @@ function Set-Autostart {
     }
 }
 
-function Optimize-Services {
-    Write-Host "`n[*] Optimiere Windows-Dienste..." -ForegroundColor $script:primaryColor
-    try {
-        # Unerwuenschte Dienste deaktivieren
-        $services = @(
-            "DiagTrack",          # Connected User Experiences and Telemetry
-            "dmwappushservice",   # WAP Push Message Routing Service
-            "SysMain",            # Superfetch
-            "WSearch"             # Windows Search
-        )
-        
-        foreach ($service in $services) {
-            Stop-Service -Name $service -Force -ErrorAction SilentlyContinue
-            Set-Service -Name $service -StartupType Disabled -ErrorAction SilentlyContinue
-            Write-Host "[+] Dienst '$service' deaktiviert" -ForegroundColor $script:secondaryColor
-        }
-    }
-    catch {
-        Write-Host "[!] Fehler bei der Dienste-Optimierung: $_" -ForegroundColor Red
-    }
-}
-
 function Optimize-RAM {
     Write-Host "`n[*] Optimiere RAM-Nutzung..." -ForegroundColor $script:primaryColor
     try {
@@ -304,4 +282,7 @@ function Optimize-WindowsServices {
             }
         }
     }
+    
+    Write-Host "`n[+] Windows-Dienste-Optimierung abgeschlossen!" -ForegroundColor Green
+    Write-Host "[!] Bitte starte deinen Computer neu, damit alle Änderungen wirksam werden." -ForegroundColor Yellow
 }
