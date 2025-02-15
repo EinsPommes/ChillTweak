@@ -1,77 +1,85 @@
-# 🌸 chillTweak
+# ChillTweak
 
-Ein moderner Windows Tweaker mit pink-weißem Design für schnelle und einfache Systemoptimierung.
+Ein modularer Windows-Optimierer, der dir hilft, dein System zu optimieren und anzupassen.
 
 ## 🚀 Features
 
-- 🛡️ Privatsphäre & Sicherheit
-- ⚡ Performance-Optimierung
-- 📦 Software-Installation
-- 🧹 System-Reinigung
-- 💾 Backup & Wiederherstellung
-- 🌍 Mehrsprachig (DE/EN)
+- 🔒 **Privatsphäre**: Deaktiviere Windows-Telemetrie und Tracking
+- ⚡ **Performance**: Optimiere Windows für bessere Leistung
+- 📦 **Software**: Installiere häufig benötigte Programme automatisch
+- 🧹 **Reinigung**: Entferne temporäre Dateien und Windows-Update-Cache
+- 💾 **Backup**: Erstelle Systemsicherungen (coming soon)
+- 🌍 **Mehrsprachig**: Unterstützt Deutsch und Englisch
+- 🛡️ **Sicherheit**: Verbessere die Windows-Sicherheitseinstellungen
 
-## 📋 Voraussetzungen
+## 📥 Installation
 
-- Windows 10/11
-- PowerShell 5.1+
-- Administratorrechte
+### Einfache Installation (Empfohlen)
 
-## 💡 Verwendung
-
-1. PowerShell als Administrator öffnen
-2. `.\chillTweak.ps1` ausführen
-3. Optionen im Menü wählen
-
-## 🛠️ Entwicklung
-
-- Modulare Struktur
-- Konfigurierbare Einstellungen
-- Verbesserte Fehlerbehandlung
-- Sicherheitsüberprüfungen
-
-## 📄 Lizenz
-
-MIT
-
-## 🚀 Schnellstart
-
-1. PowerShell als Administrator öffnen
-2. Diesen Befehl kopieren und einfügen:
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/einspommes/chillTweak/main/chillTweak.ps1" -UseBasicParsing | Invoke-Expression
-
-3. Skript ausführen:
-
-## ✨ Features
-
-### 🛡️ Privatsphäre
-- Windows Telemetrie deaktivieren
-- Tracking-Dienste stoppen
-- Datenschutz verbessern
-
-### ⚡ Performance
-- Höchstleistungs-Energieplan aktivieren
-- Visuelle Effekte optimieren
-- Systemleistung verbessern
-
-### 📦 Software
-Automatische Installation von:
-- 7-Zip
-- Notepad++
-- VLC Media Player
-
-### 🧹 Reinigung
-- Temporäre Dateien löschen
-- Papierkorb leeren
-- Speicherplatz optimieren
-
-### 💾 Backup
-- Benutzerordner sichern (Dokumente, Bilder, Desktop)
-- Registry-Einstellungen exportieren
-- Vollständige System-Backups erstellen
-- AES-256 Verschlüsselung der Backups
-- Sicherer Schlüssel-Export
-
-## 📁 Projektstruktur
-
+1. Öffne PowerShell als Administrator
+2. Führe folgenden Befehl aus:
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/einspommes/chillTweak/main/install.ps1" -UseBasicParsing | Invoke-Expression
 ```
+3. Folge den Anweisungen auf dem Bildschirm
+
+Das Installationsprogramm wird:
+- ChillTweak in dein Benutzerverzeichnis installieren
+- Eine Desktop-Verknüpfung erstellen
+- Ein Start-Skript erstellen
+
+### Manuelle Installation
+
+1. Lade das Repository herunter
+2. Entpacke es in einen Ordner deiner Wahl
+3. Führe `chillTweak.ps1` als Administrator aus
+
+## 🎮 Verwendung
+
+1. Starte ChillTweak über die Desktop-Verknüpfung (Rechtsklick → Als Administrator ausführen)
+2. Wähle im Hauptmenü die gewünschte Option:
+   - 1️⃣ Privatsphäre
+   - 2️⃣ Performance
+   - 3️⃣ Software
+   - 4️⃣ Reinigung
+   - 5️⃣ Backup
+   - 6️⃣ Hilfe
+   - 7️⃣ Sprache
+   - 8️⃣ Updates
+   - Q️⃣ Beenden
+
+## ⚠️ Wichtige Hinweise
+
+- ChillTweak benötigt **Administratorrechte**
+- Erstelle einen **Backup** vor größeren Änderungen
+- Einige Funktionen erfordern einen **Neustart**
+- Das Tool ist in **aktiver Entwicklung**
+
+## 🛠️ Technische Details
+
+- Geschrieben in PowerShell
+- Modularer Aufbau für einfache Erweiterbarkeit
+- Automatische Winget-Installation bei Bedarf
+- JSON-basierte Konfiguration
+- Ausführliche Fehlerbehandlung und Logging
+
+## 🤝 Mitwirken
+
+Beiträge sind willkommen! Du kannst:
+- Fehler melden
+- Neue Features vorschlagen
+- Pull Requests einreichen
+
+## 📜 Lizenz
+
+Dieses Projekt ist unter der MIT-Lizenz lizenziert.
+
+## 🙏 Danksagung
+
+- Dank an alle Mitwirkenden
+- Inspiriert von verschiedenen Windows-Optimierungstools
+- Dank an die PowerShell-Community
+
+---
+
+Made with ❤️ by EinsPommes
