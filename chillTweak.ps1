@@ -115,9 +115,10 @@ try {
             "3" { Install-CommonSoftware }
             "4" { Clear-SystemFiles }
             "5" { Backup-System }
-            "6" { Show-Help }
-            "7" { Set-Language; Save-Config }
-            "8" { Update-Windows }
+            "6" { Optimize-WindowsServices }
+            "7" { Show-Help }
+            "8" { Set-Language; Save-Config }
+            "9" { Update-Windows }
             "Q" { break }
             default { Write-Host "[!] Ungueltige Eingabe" -ForegroundColor Red }
         }

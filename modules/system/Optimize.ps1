@@ -236,3 +236,127 @@ function Optimize-RAM {
         Write-Host "[!] Fehler bei der RAM-Optimierung: $_" -ForegroundColor Red
     }
 }
+
+function Optimize-WindowsServices {
+    Write-Host "`n[*] Optimiere Windows-Dienste..." -ForegroundColor $script:primaryColor
+    try {
+        $services = @{
+            # Telemetrie und Diagnose
+            "DiagTrack" = "Connected User Experiences and Telemetry"
+            "dmwappushservice" = "WAP Push Message Routing Service"
+            "diagnosticshub.standardcollector.service" = "Microsoft (R) Diagnostics Hub Standard Collector Service"
+            
+            # Drucken und Fax
+            "Fax" = "Fax"
+            "PrintNotify" = "Printer Extensions and Notifications"
+            "SpoolerService" = "Print Spooler"
+            
+            # Xbox und Gaming
+            "XboxGipSvc" = "Xbox Accessory Management Service"
+            "XblAuthManager" = "Xbox Live Auth Manager"
+            "XblGameSave" = "Xbox Live Game Save"
+            "XboxNetApiSvc" = "Xbox Live Networking Service"
+            
+            # Windows-Suche und Indizierung
+            "WSearch" = "Windows Search"
+            "wscsvc" = "Security Center"
+            
+            # Remote-Zugriff
+            "RemoteRegistry" = "Remote Registry"
+            "TermService" = "Remote Desktop Services"
+            
+            # Windows Update
+            "wuauserv" = "Windows Update"
+            "BITS" = "Background Intelligent Transfer Service"
+            
+            # Sonstige Dienste
+            "SysMain" = "Superfetch"
+            "WbioSrvc" = "Windows Biometric Service"
+            "FontCache" = "Windows Font Cache Service"
+            "lfsvc" = "Geolocation Service"
+            "MapsBroker" = "Downloaded Maps Manager"
+            "wisvc" = "Windows Insider Service"
+            "RetailDemo" = "Retail Demo Service"
+        }
+
+        Write-Host "`nVerfügbare Dienste zum Deaktivieren:" -ForegroundColor $script:secondaryColor
+        $i = 1
+        $serviceList = @()
+        foreach ($service in $services.GetEnumerator()) {
+            Write-Host "[$i] $($service.Value) ($($service.Key))" -ForegroundColor $script:primaryColor
+            $serviceList += $service.Key
+            $i++
+        }
+
+        Write-Host "`n[A] Alle Dienste deaktivieren" -ForegroundColor Yellow
+        Write-Host "[E] Empfohlene Dienste deaktivieren" -ForegroundColor Green
+        Write-Host "[Q] Zurück zum Hauptmenü" -ForegroundColor Red
+
+        $choice = Read-Host "`nWähle eine Option"
+
+        switch ($choice) {
+            "A" {
+                foreach ($service in $serviceList) {
+                    try {
+                        Stop-Service -Name $service -Force -ErrorAction SilentlyContinue
+                        Set-Service -Name $service -StartupType Disabled -ErrorAction SilentlyContinue
+                        Write-Host "[+] Dienst '$service' deaktiviert" -ForegroundColor Green
+                    }
+                    catch {
+                        Write-Host "[!] Fehler beim Deaktivieren von '$service'" -ForegroundColor Red
+                    }
+                }
+            }
+            "E" {
+                $recommended = @(
+                    "DiagTrack",
+                    "dmwappushservice",
+                    "SysMain",
+                    "WSearch",
+                    "XboxGipSvc",
+                    "XblAuthManager",
+                    "XblGameSave",
+                    "XboxNetApiSvc",
+                    "wisvc",
+                    "RetailDemo"
+                )
+                foreach ($service in $recommended) {
+                    try {
+                        Stop-Service -Name $service -Force -ErrorAction SilentlyContinue
+                        Set-Service -Name $service -StartupType Disabled -ErrorAction SilentlyContinue
+                        Write-Host "[+] Dienst '$service' deaktiviert" -ForegroundColor Green
+                    }
+                    catch {
+                        Write-Host "[!] Fehler beim Deaktivieren von '$service'" -ForegroundColor Red
+                    }
+                }
+            }
+            "Q" {
+                return
+            }
+            default {
+                if ([int]::TryParse($choice, [ref]$null)) {
+                    $index = [int]$choice - 1
+                    if ($index -ge 0 -and $index -lt $serviceList.Count) {
+                        $service = $serviceList[$index]
+                        try {
+                            Stop-Service -Name $service -Force -ErrorAction SilentlyContinue
+                            Set-Service -Name $service -StartupType Disabled -ErrorAction SilentlyContinue
+                            Write-Host "[+] Dienst '$service' deaktiviert" -ForegroundColor Green
+                        }
+                        catch {
+                            Write-Host "[!] Fehler beim Deaktivieren von '$service'" -ForegroundColor Red
+                        }
+                    }
+                }
+            }
+        }
+
+        Write-Host "`n[+] Windows-Dienste-Optimierung abgeschlossen!" -ForegroundColor Green
+        Write-Host "[!] Bitte starte deinen Computer neu, damit alle Änderungen wirksam werden." -ForegroundColor Yellow
+    }
+    catch {
+        Write-Host "[!] Fehler bei der Windows-Dienste-Optimierung" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
+    }
+}

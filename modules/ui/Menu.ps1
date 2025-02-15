@@ -28,22 +28,18 @@ function Show-Banner {
 }
 
 function Show-Menu {
-    try {
-        Write-Host "`n=== $(Get-Translation 'Menu_Title') ===" -ForegroundColor $script:primaryColor
-        Write-Host "[1] $(Get-Translation 'Menu_Privacy')" -ForegroundColor $script:secondaryColor
-        Write-Host "[2] $(Get-Translation 'Menu_Performance')" -ForegroundColor $script:secondaryColor
-        Write-Host "[3] $(Get-Translation 'Menu_Software')" -ForegroundColor $script:secondaryColor
-        Write-Host "[4] $(Get-Translation 'Menu_Cleanup')" -ForegroundColor $script:secondaryColor
-        Write-Host "[5] $(Get-Translation 'Menu_Backup')" -ForegroundColor $script:secondaryColor
-        Write-Host "[6] $(Get-Translation 'Menu_Help')" -ForegroundColor $script:secondaryColor
-        Write-Host "[7] $(Get-Translation 'Menu_Language')" -ForegroundColor $script:secondaryColor
-        Write-Host "[8] $(Get-Translation 'Menu_Updates')" -ForegroundColor $script:secondaryColor
-        Write-Host "[Q] $(Get-Translation 'Menu_Exit')" -ForegroundColor $script:secondaryColor
-    }
-    catch {
-        Write-Host "[!] Fehler beim Anzeigen des Menüs" -ForegroundColor Red
-        Write-Host $_.Exception.Message -ForegroundColor Red
-    }
+    Clear-Host
+    Write-Host "`n=== $($script:Translations[$script:CurrentLanguage]['Menu_Title']) ===" -ForegroundColor $script:primaryColor
+    Write-Host "1. $($script:Translations[$script:CurrentLanguage]['Menu_Privacy'])" -ForegroundColor $script:secondaryColor
+    Write-Host "2. $($script:Translations[$script:CurrentLanguage]['Menu_Performance'])" -ForegroundColor $script:secondaryColor
+    Write-Host "3. $($script:Translations[$script:CurrentLanguage]['Menu_Software'])" -ForegroundColor $script:secondaryColor
+    Write-Host "4. $($script:Translations[$script:CurrentLanguage]['Menu_Cleanup'])" -ForegroundColor $script:secondaryColor
+    Write-Host "5. $($script:Translations[$script:CurrentLanguage]['Menu_Backup'])" -ForegroundColor $script:secondaryColor
+    Write-Host "6. Windows-Dienste" -ForegroundColor $script:secondaryColor
+    Write-Host "7. $($script:Translations[$script:CurrentLanguage]['Menu_Help'])" -ForegroundColor $script:secondaryColor
+    Write-Host "8. $($script:Translations[$script:CurrentLanguage]['Menu_Language'])" -ForegroundColor $script:secondaryColor
+    Write-Host "9. $($script:Translations[$script:CurrentLanguage]['Menu_Updates'])" -ForegroundColor $script:secondaryColor
+    Write-Host "Q. $($script:Translations[$script:CurrentLanguage]['Menu_Exit'])" -ForegroundColor $script:secondaryColor
 }
 
 function Show-Progress {
