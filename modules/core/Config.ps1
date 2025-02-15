@@ -2,6 +2,7 @@
 function Save-Config {
     param()
     try {
+        # Konfiguration erstellen
         $config = @{
             Language = $script:CurrentLanguage
             Theme = @{
@@ -39,10 +40,14 @@ function Save-Config {
                 BackupCount = 5
             }
         }
-        $config | ConvertTo-Json -Depth 4 | Out-File $script:ConfigPath -Force
+
+        # Konfiguration speichern
+        $config | ConvertTo-Json -Depth 4 | Set-Content $script:ConfigPath -Force -Encoding UTF8
+        Write-Host "[+] Konfiguration gespeichert" -ForegroundColor Green
     }
     catch {
-        Write-Host "[!] Fehler beim Speichern der Konfiguration: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "[!] Fehler beim Speichern der Konfiguration" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
 
@@ -50,7 +55,7 @@ function Import-Config {
     param()
     try {
         if (Test-Path $script:ConfigPath) {
-            $config = Get-Content $script:ConfigPath | ConvertFrom-Json
+            $config = Get-Content $script:ConfigPath -Raw | ConvertFrom-Json
             
             # Grundeinstellungen
             $script:CurrentLanguage = $config.Language
@@ -87,7 +92,8 @@ function Import-Config {
         }
     }
     catch {
-        Write-Host "[!] Fehler beim Laden der Konfiguration: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "[!] Fehler beim Laden der Konfiguration" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
 
@@ -173,12 +179,25 @@ $script:Translations = @{
 # Hilfsfunktion für Übersetzungen
 function Get-Translation {
     param(
+        [Parameter(Mandatory = $true)]
         [string]$Key
     )
     try {
+        if (-not $script:Translations.ContainsKey($script:CurrentLanguage)) {
+            Write-Host "[!] Sprache '$script:CurrentLanguage' nicht gefunden, verwende 'en'" -ForegroundColor Yellow
+            $script:CurrentLanguage = "en"
+        }
+        
+        if (-not $script:Translations[$script:CurrentLanguage].ContainsKey($Key)) {
+            Write-Host "[!] Übersetzung für '$Key' nicht gefunden" -ForegroundColor Yellow
+            return $Key
+        }
+        
         return $script:Translations[$script:CurrentLanguage][$Key]
     }
     catch {
+        Write-Host "[!] Fehler beim Laden der Übersetzung" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
         return $Key
     }
-} 
+}

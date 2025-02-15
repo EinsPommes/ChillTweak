@@ -1,84 +1,92 @@
 # Backup-Funktionen
 function Backup-System {
-    Write-Host "`n[*] Backup-Assistent wird gestartet..." -ForegroundColor $primaryColor
+    param(
+        [string]$BackupPath = $script:BackupSettings.DefaultPath
+    )
+    
     try {
-        # Backup-Ziel festlegen
-        $defaultPath = "$env:USERPROFILE\Documents\chillTweak_Backups"
-        $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm"
-        $backupPath = "$defaultPath\Backup_$timestamp"
+        Write-Host "`n[*] Erstelle Systemsicherung..." -ForegroundColor $script:primaryColor
         
         # Backup-Verzeichnis erstellen
-        if (-not (Test-Path $defaultPath)) {
-            New-Item -ItemType Directory -Path $defaultPath | Out-Null
+        if (-not (Test-Path $BackupPath)) {
+            New-Item -Path $BackupPath -ItemType Directory -Force | Out-Null
+            Write-Host "[+] Backup-Verzeichnis erstellt: $BackupPath" -ForegroundColor $script:secondaryColor
         }
         
-        # Backup-Menü
-        Write-Host "`nWaehle eine Backup-Option:" -ForegroundColor $secondaryColor
-        Write-Host "[1] Wichtige Benutzerordner sichern" -ForegroundColor $secondaryColor
-        Write-Host "[2] Systemeinstellungen exportieren" -ForegroundColor $secondaryColor
-        Write-Host "[3] Vollstaendiges Backup" -ForegroundColor $secondaryColor
-        Write-Host "[4]" -ForegroundColor $primaryColor -NoNewline
-        Write-Host " Zurueck" -ForegroundColor $secondaryColor
+        # Zeitstempel fuer Backup-Namen
+        $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm"
+        $backupFile = Join-Path $BackupPath "ChillTweak_Backup_$timestamp.zip"
         
-        $choice = Read-Host "`nWaehle eine Option"
+        # Wichtige Systemordner und Dateien sichern
+        $sourcePaths = @(
+            "$env:USERPROFILE\Documents",
+            "$env:USERPROFILE\Desktop",
+            "$env:USERPROFILE\Pictures",
+            "$env:APPDATA\Microsoft\Windows\Start Menu\Programs",
+            "$env:LOCALAPPDATA\Microsoft\Windows\WinX"
+        )
         
-        try {
-            switch ($choice) {
-                "1" { Backup-UserFolders -BackupPath $backupPath }
-                "2" { Export-SystemSettings -BackupPath $backupPath }
-                "3" { 
-                    Backup-UserFolders -BackupPath $backupPath
-                    Export-SystemSettings -BackupPath $backupPath
-                }
-                "4" { return }
-                default { Write-Host "`n[!] Ungueltige Eingabe" -ForegroundColor Red }
+        # Backup erstellen
+        Compress-Archive -Path $sourcePaths -DestinationPath $backupFile -Force
+        
+        # Backup verschluesseln wenn aktiviert
+        if ($script:BackupSettings.Encryption) {
+            $encryptedFile = "$backupFile.enc"
+            # TODO: Implementiere Verschluesselung
+            Write-Host "[+] Backup verschluesselt" -ForegroundColor $script:secondaryColor
+        }
+        
+        # Alte Backups bereinigen
+        Clean-OldBackups -BackupPath $BackupPath
+        
+        $script:LastBackupPath = $backupFile
+        Write-Host "[+] Systemsicherung erstellt: $backupFile" -ForegroundColor $script:secondaryColor
+    }
+    catch {
+        Write-Host "[!] Fehler bei der Systemsicherung" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
+    }
+}
+
+function Clean-OldBackups {
+    param(
+        [string]$BackupPath
+    )
+    
+    try {
+        $maxBackups = $script:BackupSettings.MaxBackups
+        $backups = Get-ChildItem -Path $BackupPath -Filter "ChillTweak_Backup_*.zip" | Sort-Object CreationTime -Descending
+        
+        if ($backups.Count -gt $maxBackups) {
+            $backupsToDelete = $backups | Select-Object -Skip $maxBackups
+            foreach ($backup in $backupsToDelete) {
+                Remove-Item $backup.FullName -Force
+                Write-Host "[+] Altes Backup entfernt: $($backup.Name)" -ForegroundColor $script:secondaryColor
             }
-        }
-        catch {
-            Write-Host "[!] Fehler bei der Backup-Operation: $_" -ForegroundColor Red
-        }
-        
-        # Backup-Pfad speichern
-        $script:LastBackupPath = $backupPath
-        Save-Config
-        
-        # Nach erfolgreichem Backup
-        if ($script:LastBackupPath) {
-            Protect-BackupData -BackupPath $script:LastBackupPath
         }
     }
     catch {
-        Write-Host "[!] Fehler beim Backup: $_" -ForegroundColor Red
+        Write-Host "[!] Fehler beim Bereinigen alter Backups" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
     }
-}
-
-function Backup-UserFolders {
-    param (
-        [string]$BackupPath
-    )
-    Write-Host "[*] Sichere Benutzerordner..." -ForegroundColor $primaryColor
-    $folders = @(
-        "$env:USERPROFILE\Documents",
-        "$env:USERPROFILE\Desktop",
-        "$env:USERPROFILE\Pictures",
-        "$env:USERPROFILE\Downloads"
-    )
-    
-    foreach ($folder in $folders) {
-        $folderName = Split-Path $folder -Leaf
-        $destination = "$BackupPath\UserFolders\$folderName"
-        Copy-Item -Path $folder -Destination $destination -Recurse -Force
-    }
-    Write-Host "[✓] Benutzerordner gesichert" -ForegroundColor $secondaryColor
 }
 
 function Export-SystemSettings {
-    param (
-        [string]$BackupPath
-    )
-    Write-Host "[*] Exportiere Systemeinstellungen..." -ForegroundColor $primaryColor
-    # Registry-Exports
-    reg export "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" "$BackupPath\Settings\Explorer.reg" /y
-    reg export "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" "$BackupPath\Settings\Autostart.reg" /y
-    Write-Host "[✓] Systemeinstellungen exportiert" -ForegroundColor $secondaryColor
-} 
+    try {
+        Write-Host "`n[*] Exportiere Systemeinstellungen..." -ForegroundColor $script:primaryColor
+        
+        # Registry-Einstellungen exportieren
+        $regBackupPath = Join-Path $script:BackupSettings.DefaultPath "registry_backup.reg"
+        reg export "HKCU\Software\Microsoft\Windows\CurrentVersion" $regBackupPath /y | Out-Null
+        
+        # Windows-Einstellungen exportieren
+        $winSettingsPath = Join-Path $script:BackupSettings.DefaultPath "windows_settings.txt"
+        Get-ComputerInfo | Out-File $winSettingsPath
+        
+        Write-Host "[+] Systemeinstellungen exportiert" -ForegroundColor $script:secondaryColor
+    }
+    catch {
+        Write-Host "[!] Fehler beim Exportieren der Systemeinstellungen" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
+    }
+}

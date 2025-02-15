@@ -1,37 +1,43 @@
 # Cleanup-Funktionen
 function Clear-SystemFiles {
-    Write-Host "`n[*] System wird aufgeraeumt..." -ForegroundColor $primaryColor
     try {
-        # Menü anzeigen
-        Write-Host "`nWaehle eine Option:" -ForegroundColor $secondaryColor
-        Write-Host "[1] Temporaere Dateien loeschen" -ForegroundColor $secondaryColor
-        Write-Host "[2] Papierkorb leeren" -ForegroundColor $secondaryColor
-        Write-Host "[3] Windows Update Cache leeren" -ForegroundColor $secondaryColor
-        Write-Host "[4] Alles aufraeumen" -ForegroundColor $secondaryColor
-        Write-Host "[5] Zurueck" -ForegroundColor $secondaryColor
-
-        $choice = Read-Host "`nWaehle eine Option"
-
-        try {
-            switch ($choice) {
-                "1" { Clear-TempFiles }
-                "2" { Clear-RecycleBin -Force -ErrorAction SilentlyContinue }
-                "3" { Clear-UpdateCache }
-                "4" { 
-                    Clear-TempFiles
-                    Clear-RecycleBin -Force -ErrorAction SilentlyContinue
-                    Clear-UpdateCache
-                }
-                "5" { return }
-                default { Write-Host "`n[!] Ungueltige Eingabe" -ForegroundColor Red }
+        Write-Host "`n[*] Starte Systemreinigung..." -ForegroundColor $script:primaryColor
+        
+        # Temporaere Dateien
+        if ($script:CleanupSettings.TempFiles) {
+            Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
+            Remove-Item -Path "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
+            Write-Host "[+] Temporaere Dateien entfernt" -ForegroundColor $script:secondaryColor
+        }
+        
+        # Papierkorb
+        if ($script:CleanupSettings.RecycleBin) {
+            Clear-RecycleBin -Force -ErrorAction SilentlyContinue
+            Write-Host "[+] Papierkorb geleert" -ForegroundColor $script:secondaryColor
+        }
+        
+        # Windows Logs
+        if ($script:CleanupSettings.WindowsLogs) {
+            wevtutil el | ForEach-Object {
+                wevtutil cl "$_" 2>&1 | Out-Null
             }
+            Write-Host "[+] Windows Logs bereinigt" -ForegroundColor $script:secondaryColor
         }
-        catch {
-            Write-Host "[!] Fehler bei der Aktion: $_" -ForegroundColor Red
+        
+        # Windows Update Cache
+        $updateCache = "C:\Windows\SoftwareDistribution\Download"
+        if (Test-Path $updateCache) {
+            Stop-Service -Name wuauserv -Force
+            Remove-Item -Path "$updateCache\*" -Recurse -Force -ErrorAction SilentlyContinue
+            Start-Service -Name wuauserv
+            Write-Host "[+] Windows Update Cache bereinigt" -ForegroundColor $script:secondaryColor
         }
+        
+        Write-Host "[+] Systemreinigung abgeschlossen" -ForegroundColor $script:secondaryColor
     }
     catch {
-        Write-Host "[!] Fehler beim Aufraeumen: $_" -ForegroundColor Red
+        Write-Host "[!] Fehler bei der Systemreinigung" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
 

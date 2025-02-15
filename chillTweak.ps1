@@ -16,11 +16,17 @@ $moduleFiles = @(
 
 # Module laden
 foreach ($module in $moduleFiles) {
-    if (Test-Path $module) {
-        . $module
-        Write-Host "[✓] Modul geladen: $module" -ForegroundColor Green
-    } else {
+    if (-not (Test-Path $module)) {
         Write-Host "[!] Modul nicht gefunden: $module" -ForegroundColor Red
+        Exit
+    }
+    try {
+        . $module
+        Write-Host "[`u{2713}] Modul geladen: $module" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "[!] Fehler beim Laden von $module" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
         Exit
     }
 }
@@ -60,7 +66,9 @@ try {
     } while ($choice -ne "Q")
     
     Write-Host "Programm beendet." -ForegroundColor $script:primaryColor
-} catch {
-    Write-Host "[!] Fehler: $($_.Exception.Message)" -ForegroundColor Red
+}
+catch {
+    Write-Host "[!] Fehler aufgetreten" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
     Exit
 }

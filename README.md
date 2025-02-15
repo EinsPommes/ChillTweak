@@ -2,6 +2,38 @@
 
 Ein moderner Windows Tweaker mit pink-weißem Design für schnelle und einfache Systemoptimierung.
 
+## 🚀 Features
+
+- 🛡️ Privatsphäre & Sicherheit
+- ⚡ Performance-Optimierung
+- 📦 Software-Installation
+- 🧹 System-Reinigung
+- 💾 Backup & Wiederherstellung
+- 🌍 Mehrsprachig (DE/EN)
+
+## 📋 Voraussetzungen
+
+- Windows 10/11
+- PowerShell 5.1+
+- Administratorrechte
+
+## 💡 Verwendung
+
+1. PowerShell als Administrator öffnen
+2. `.\chillTweak.ps1` ausführen
+3. Optionen im Menü wählen
+
+## 🛠️ Entwicklung
+
+- Modulare Struktur
+- Konfigurierbare Einstellungen
+- Verbesserte Fehlerbehandlung
+- Sicherheitsüberprüfungen
+
+## 📄 Lizenz
+
+MIT
+
 ## 🚀 Schnellstart
 
 1. PowerShell als Administrator öffnen
@@ -40,89 +72,6 @@ Automatische Installation von:
 - AES-256 Verschlüsselung der Backups
 - Sicherer Schlüssel-Export
 
-## 📋 Voraussetzungen
-
-- Windows 10 oder 11
-- PowerShell 5.1+
-- Administratorrechte
-- Internetverbindung
-
 ## 📁 Projektstruktur
 
 ```
-ChillTweak/
-├── chillTweak.ps1          # Hauptskript
-├── README.md               # Dokumentation
-├── modules/
-│   ├── core/
-│   │   ├── Config.ps1      # Konfigurationsfunktionen
-│   │   └── Security.ps1    # Sicherheitsfunktionen
-│   ├── system/
-│   │   ├── Backup.ps1      # Backup-Funktionen
-│   │   ├── Cleanup.ps1     # Aufräumfunktionen
-│   │   ├── Optimize.ps1    # Optimierungsfunktionen
-│   │   └── Software.ps1    # Software-Installation
-│   └── ui/
-│       └── Menu.ps1        # Menü und UI-Funktionen
-└── config/
-    └── settings.json       # Standardeinstellungen
-```
-
-## 💡 Verwendung
-
-1. **Start:**
-   - PowerShell als Administrator öffnen
-   - Schnellstart-Befehl eingeben
-
-2. **Navigation:**
-   - Optionen mit Zahlen [1-6] auswählen
-   - [Q] zum Beenden
-   - Beliebige Taste zum Fortfahren
-
-3. **Backup-Speicherort:**
-   - `%USERPROFILE%\Documents\chillTweak_Backups`
-
-4. **Logs:**
-   - `%USERPROFILE%\Documents\chillTweak_log.txt`
-
-## ⚠️ Wichtige Hinweise
-
-- Vor Verwendung System-Backup erstellen
-- Nur als Administrator ausführen
-- Nach manchen Änderungen Neustart erforderlich
-- Bei Problemen Logs prüfen
-
-## 🛠️ Entwicklung
-
-### Mitarbeit
-1. Repository forken
-2. Feature-Branch erstellen
-3. Änderungen committen
-4. Pull Request öffnen
-
-### Kontakt
-- GitHub Issues für Bugs
-- Pull Requests für Features
-
-### Logging
-- Einfache Fehlerprotokollierung
-- Klare Fehlermeldungen
-- Benutzerfreundliche Statusmeldungen
-
-### Sicherheit
-- Verschlüsselte Backups mit AES-256
-- Sichere Zufallszahlengenerierung für Schlüssel
-- Automatische Schlüsselverwaltung
-
-## 📄 Lizenz
-
-MIT-Lizenz - Siehe [LICENSE](LICENSE)
-
-## 👥 Team
-
-- Entwickler: Jannik
-- Design: Jannik
-
----
-
-Made with 💖 in Germany
