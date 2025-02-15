@@ -523,7 +523,7 @@ function Save-Config {
     }
 }
 
-function Load-Config {
+function Import-Config {
     try {
         if (Test-Path $script:ConfigPath) {
             $config = Get-Content $script:ConfigPath | ConvertFrom-Json
@@ -548,7 +548,7 @@ function Load-Config {
 
 # Hauptprogramm
 # Konfiguration laden
-Load-Config
+Import-Config
 
 # Wenn keine Sprache gesetzt ist, Sprachauswahl anzeigen
 if (-not $script:CurrentLanguage) {
