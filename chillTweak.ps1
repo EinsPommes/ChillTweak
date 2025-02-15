@@ -31,6 +31,11 @@ if (-not $scriptPath) {
 $script:primaryColor = "Magenta"  # Pink
 $script:secondaryColor = "White"  # Weiß
 
+# Am Anfang der Datei nach den Farbdefinitionen
+$script:CurrentLanguage = 'de'  # Standardsprache
+$script:CustomSoftware = @()    # Leeres Array für benutzerdefinierte Software
+$script:LastBackupPath = ""     # Letzter Backup-Pfad
+
 # Sprachdateien
 $script:Strings = @{
     'de' = @{
@@ -130,9 +135,10 @@ function Disable-Telemetry {
 function Show-Progress {
     param (
         [string]$Activity,
-        [int]$PercentComplete
+        [int]$PercentComplete,
+        [string]$Status = "In Bearbeitung..."
     )
-    Write-Progress -Activity $Activity -PercentComplete $PercentComplete -Status "$PercentComplete% abgeschlossen"
+    Write-Progress -Activity $Activity -Status $Status -PercentComplete $PercentComplete
 }
 
 function Optimize-System {
@@ -499,27 +505,44 @@ function Show-Help {
 $script:ConfigPath = "$env:USERPROFILE\Documents\chillTweak_config.json"
 
 function Save-Config {
-    $config = @{
-        Language = $script:CurrentLanguage
-        Theme = @{
-            Primary = $script:primaryColor
-            Secondary = $script:secondaryColor
+    try {
+        $config = @{
+            Language = $script:CurrentLanguage
+            Theme = @{
+                Primary = $script:primaryColor
+                Secondary = $script:secondaryColor
+            }
+            CustomSoftware = $script:CustomSoftware
+            LastBackupPath = $script:LastBackupPath
         }
-        CustomSoftware = $script:CustomSoftware
-        LastBackupPath = $script:LastBackupPath
+        
+        $config | ConvertTo-Json | Out-File $script:ConfigPath -Force
     }
-    
-    $config | ConvertTo-Json | Out-File $script:ConfigPath
+    catch {
+        Write-Host "[!] Fehler beim Speichern der Konfiguration: $_" -ForegroundColor Red
+    }
 }
 
 function Load-Config {
-    if (Test-Path $script:ConfigPath) {
-        $config = Get-Content $script:ConfigPath | ConvertFrom-Json
-        $script:CurrentLanguage = $config.Language
-        $script:primaryColor = $config.Theme.Primary
-        $script:secondaryColor = $config.Theme.Secondary
-        $script:CustomSoftware = $config.CustomSoftware
-        $script:LastBackupPath = $config.LastBackupPath
+    try {
+        if (Test-Path $script:ConfigPath) {
+            $config = Get-Content $script:ConfigPath | ConvertFrom-Json
+            $script:CurrentLanguage = $config.Language
+            $script:primaryColor = $config.Theme.Primary
+            $script:secondaryColor = $config.Theme.Secondary
+            $script:CustomSoftware = $config.CustomSoftware
+            $script:LastBackupPath = $config.LastBackupPath
+        }
+        else {
+            # Standardwerte setzen
+            $script:CurrentLanguage = 'de'
+            Save-Config
+        }
+    }
+    catch {
+        Write-Host "[!] Fehler beim Laden der Konfiguration: $_" -ForegroundColor Red
+        # Standardwerte setzen
+        $script:CurrentLanguage = 'de'
     }
 }
 
