@@ -115,6 +115,8 @@ function Show-Menu {
     Write-Host " Hilfe anzeigen" -ForegroundColor $secondaryColor
     Write-Host "[7]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " Sprache ändern" -ForegroundColor $secondaryColor
+    Write-Host "[8]" -ForegroundColor $primaryColor -NoNewline
+    Write-Host " Windows Update Manager" -ForegroundColor $secondaryColor
     Write-Host "[Q]" -ForegroundColor $primaryColor -NoNewline
     Write-Host " Beenden" -ForegroundColor $secondaryColor
 }
@@ -501,6 +503,20 @@ function Show-Help {
 "@ -ForegroundColor $secondaryColor
 }
 
+function Manage-WindowsUpdate {
+    Write-Host "`n[*] Windows Update Manager..." -ForegroundColor $primaryColor
+    
+    Write-Host "`nWähle eine Option:" -ForegroundColor $secondaryColor
+    Write-Host "[1]" -ForegroundColor $primaryColor -NoNewline
+    Write-Host " Updates suchen" -ForegroundColor $secondaryColor
+    Write-Host "[2]" -ForegroundColor $primaryColor -NoNewline
+    Write-Host " Updates installieren" -ForegroundColor $secondaryColor
+    Write-Host "[3]" -ForegroundColor $primaryColor -NoNewline
+    Write-Host " Update-Verlauf anzeigen" -ForegroundColor $secondaryColor
+    Write-Host "[4]" -ForegroundColor $primaryColor -NoNewline
+    Write-Host " Updates pausieren" -ForegroundColor $secondaryColor
+}
+
 # Konfigurationsdatei
 $script:ConfigPath = "$env:USERPROFILE\Documents\chillTweak_config.json"
 
@@ -546,6 +562,32 @@ function Import-Config {
     }
 }
 
+function Optimize-Security {
+    Write-Host "`n[*] Sicherheitsoptimierungen..." -ForegroundColor $primaryColor
+    
+    # Windows Defender optimieren
+    Set-MpPreference -DisableRealtimeMonitoring $false
+    Set-MpPreference -DisableArchiveScanning $false
+    
+    # Firewall-Regeln
+    Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True
+    
+    # SMB1 deaktivieren
+    Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol
+}
+
+function Update-Drivers {
+    Write-Host "`n[*] Suche nach Treiber-Updates..." -ForegroundColor $primaryColor
+    
+    # Treiber auflisten
+    $drivers = Get-WmiObject Win32_PnPSignedDriver | 
+        Where-Object { $_.DeviceName -ne $null } |
+        Select-Object DeviceName, DriverVersion
+    
+    # Anzeigen
+    $drivers | Format-Table -AutoSize
+}
+
 # Hauptprogramm
 # Konfiguration laden
 Import-Config
@@ -576,6 +618,7 @@ do {
             Set-Language
             Save-Config 
         }
+        "8" { Manage-WindowsUpdate }
         "Q" { break }
         default { Write-Host "`n[!] Ungültige Eingabe" -ForegroundColor Red }
     }
