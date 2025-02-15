@@ -330,6 +330,4 @@ do {
 } while ($choice -ne "Q")
 
 Stop-Transcript
-
-# Programm beenden
-Write-Host "`n[*] Programm wird beendet. Logs wurden gespeichert in: $logPath" -ForegroundColor $primaryColor
+Write-Host "Programm beendet." -ForegroundColor $primaryColor
