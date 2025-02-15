@@ -62,6 +62,7 @@ $moduleFiles = @(
     "modules/system/Software.ps1",
     "modules/security/Security.ps1"
 )
+
 foreach ($module in $moduleFiles) {
     if (-not (Test-Path $module)) {
         $modulesExist = $false
@@ -76,6 +77,12 @@ if (-not $modulesExist) {
         Exit
     }
 }
+
+# Globale Variablen
+$script:primaryColor = "Magenta"
+$script:secondaryColor = "White"
+$script:CurrentLanguage = "de"
+$script:ConfigPath = "$env:USERPROFILE\Documents\chillTweak_config.json"
 
 # Module laden
 foreach ($module in $moduleFiles) {
@@ -93,12 +100,6 @@ foreach ($module in $moduleFiles) {
         Exit
     }
 }
-
-# Globale Variablen
-$script:primaryColor = "Magenta"
-$script:secondaryColor = "White"
-$script:CurrentLanguage = "de"
-$script:ConfigPath = "$env:USERPROFILE\Documents\chillTweak_config.json"
 
 # Hauptprogramm
 try {
