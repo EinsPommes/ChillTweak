@@ -35,7 +35,7 @@ function Show-Menu {
     Write-Host "3. $($script:Translations[$script:CurrentLanguage]['Menu_Software'])" -ForegroundColor $script:secondaryColor
     Write-Host "4. $($script:Translations[$script:CurrentLanguage]['Menu_Cleanup'])" -ForegroundColor $script:secondaryColor
     Write-Host "5. $($script:Translations[$script:CurrentLanguage]['Menu_Backup'])" -ForegroundColor $script:secondaryColor
-    Write-Host "6. Windows-Dienste" -ForegroundColor $script:secondaryColor
+    Write-Host "6. $($script:Translations[$script:CurrentLanguage]['Menu_Services'])" -ForegroundColor $script:secondaryColor
     Write-Host "7. $($script:Translations[$script:CurrentLanguage]['Menu_Help'])" -ForegroundColor $script:secondaryColor
     Write-Host "8. $($script:Translations[$script:CurrentLanguage]['Menu_Language'])" -ForegroundColor $script:secondaryColor
     Write-Host "9. $($script:Translations[$script:CurrentLanguage]['Menu_Updates'])" -ForegroundColor $script:secondaryColor
