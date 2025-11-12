@@ -30,6 +30,9 @@ function Initialize-Modules {
         "modules/system/Backup.ps1",
         "modules/system/Cleanup.ps1",
         "modules/system/Software.ps1",
+        "modules/system/Registry.ps1",
+        "modules/system/Network.ps1",
+        "modules/system/Disk.ps1",
         "modules/security/Security.ps1"
     )
 
@@ -60,6 +63,9 @@ $moduleFiles = @(
     "modules/system/Backup.ps1",
     "modules/system/Cleanup.ps1",
     "modules/system/Software.ps1",
+    "modules/system/Registry.ps1",
+    "modules/system/Network.ps1",
+    "modules/system/Disk.ps1",
     "modules/security/Security.ps1"
 )
 
@@ -113,13 +119,16 @@ try {
         switch ($choice) {
             "1" { Disable-Telemetry }
             "2" { Optimize-System }
-            "3" { Install-CommonSoftware }
-            "4" { Clear-SystemFiles }
-            "5" { Backup-System }
-            "6" { Optimize-WindowsServices }
-            "7" { Show-Help }
-            "8" { Set-Language; Save-Config }
-            "9" { Update-Windows }
+            "3" { Show-RegistryTweaksMenu }
+            "4" { Optimize-NetworkAdvanced }
+            "5" { Optimize-DiskPerformance }
+            "6" { Install-CommonSoftware }
+            "7" { Clear-SystemFiles }
+            "8" { Optimize-WindowsServices }
+            "9" { Backup-System }
+            "10" { Update-Windows }
+            "11" { Show-Help }
+            "12" { Set-Language; Save-Config }
             "Q" { break }
             default { Write-Host "[!] Ungueltige Eingabe" -ForegroundColor Red }
         }
