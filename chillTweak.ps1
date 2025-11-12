@@ -1,7 +1,7 @@
 param([switch]$TestMode)
 
 # chillTweak - Ein modularer Windows Tweaker
-# Version: 1.0
+# Version: 2.0
 
 # Basis-URL für Module
 $baseUrl = "https://raw.githubusercontent.com/einspommes/chillTweak/main"
@@ -25,6 +25,7 @@ function Initialize-Modules {
     # Module herunterladen
     $moduleFiles = @(
         "modules/core/Config.ps1",
+        "modules/core/Logging.ps1",
         "modules/ui/Menu.ps1",
         "modules/system/Optimize.ps1",
         "modules/system/Backup.ps1",
@@ -33,6 +34,8 @@ function Initialize-Modules {
         "modules/system/Registry.ps1",
         "modules/system/Network.ps1",
         "modules/system/Disk.ps1",
+        "modules/system/SystemInfo.ps1",
+        "modules/system/Profiles.ps1",
         "modules/security/Security.ps1"
     )
 
@@ -58,6 +61,7 @@ function Initialize-Modules {
 $modulesExist = $true
 $moduleFiles = @(
     "modules/core/Config.ps1",
+    "modules/core/Logging.ps1",
     "modules/ui/Menu.ps1",
     "modules/system/Optimize.ps1",
     "modules/system/Backup.ps1",
@@ -66,6 +70,8 @@ $moduleFiles = @(
     "modules/system/Registry.ps1",
     "modules/system/Network.ps1",
     "modules/system/Disk.ps1",
+    "modules/system/SystemInfo.ps1",
+    "modules/system/Profiles.ps1",
     "modules/security/Security.ps1"
 )
 
@@ -110,25 +116,31 @@ foreach ($module in $moduleFiles) {
 # Hauptprogramm
 try {
     Test-AdminRights
+    Initialize-Logging
     Import-Config
+    
+    Write-LogEntry "ChillTweak gestartet - Version 2.0" -Level "INFO" -Category "System"
     
     do {
         Show-Menu
         $choice = Read-Host "`nWaehle eine Option"
         
         switch ($choice) {
-            "1" { Disable-Telemetry }
-            "2" { Optimize-System }
+            "1" { Disable-Telemetry; Write-LogEntry "Telemetrie deaktiviert" -Level "SUCCESS" -Category "Privacy" }
+            "2" { Optimize-System; Write-LogEntry "System optimiert" -Level "SUCCESS" -Category "Performance" }
             "3" { Show-RegistryTweaksMenu }
             "4" { Optimize-NetworkAdvanced }
             "5" { Optimize-DiskPerformance }
-            "6" { Install-CommonSoftware }
-            "7" { Clear-SystemFiles }
-            "8" { Optimize-WindowsServices }
-            "9" { Backup-System }
-            "10" { Update-Windows }
-            "11" { Show-Help }
-            "12" { Set-Language; Save-Config }
+            "6" { Optimize-WindowsServices }
+            "7" { Show-ProfilesMenu }
+            "8" { Install-CommonSoftware }
+            "9" { Clear-SystemFiles; Write-LogEntry "System gereinigt" -Level "SUCCESS" -Category "Cleanup" }
+            "10" { Backup-System }
+            "11" { Update-Windows }
+            "12" { Show-SystemDashboard }
+            "13" { Show-Logs }
+            "14" { Show-Help }
+            "15" { Set-Language; Save-Config }
             "Q" { break }
             default { Write-Host "[!] Ungueltige Eingabe" -ForegroundColor Red }
         }

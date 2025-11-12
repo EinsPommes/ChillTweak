@@ -62,10 +62,34 @@ Ein modularer Windows-Optimierer, der dir hilft, dein System zu optimieren und a
 - Backup-Rotation
 - Wiederherstellungspunkte
 
+### 🎯 Konfigurations-Profile
+- **Gaming-Profil**: Maximale Performance für Spiele
+- **Privacy-Profil**: Maximaler Datenschutz
+- **Performance-Profil**: Ausgewogene Performance
+- **Balanced-Profil**: Standard-Empfehlungen
+- **SSD-Profil**: Spezielle SSD-Optimierungen
+
+### 📊 System-Informationen
+- Detailliertes System-Dashboard
+- Hardware-Informationen (CPU, RAM, Disk, GPU)
+- Netzwerk-Status
+- Windows Update Status
+- Windows Defender Status
+- Top-Prozesse nach CPU/RAM
+- System-Report Export
+
+### 📝 Logging-System
+- Automatisches Logging aller Änderungen
+- Log-Rotation (max. 50 Dateien, 30 Tage)
+- Log-Anzeige und -Verwaltung
+- Log-Zusammenfassungen
+- Kategorisierte Logs (Registry, Network, Services, etc.)
+
 ### 🌍 Weitere Features
 - Mehrsprachig (Deutsch und Englisch)
-- Modularer Aufbau
+- Modularer Aufbau für einfache Erweiterbarkeit
 - Ausführliche Fehlerbehandlung
+- Automatische Wiederherstellungspunkte vor Änderungen
 - Automatische Updates
 
 ## 📥 Installation
@@ -94,19 +118,31 @@ Das Installationsprogramm wird:
 
 1. Starte ChillTweak über die Desktop-Verknüpfung (Rechtsklick → Als Administrator ausführen)
 2. Wähle im Hauptmenü die gewünschte Option:
-   - **[1]** Privatsphäre & Telemetrie
-   - **[2]** Performance-Optimierung
-   - **[3]** Registry Tweaks (Explorer, Taskbar, etc.)
-   - **[4]** Netzwerk-Optimierung
-   - **[5]** Disk-Optimierung (SSD/HDD)
-   - **[6]** Software-Installation
-   - **[7]** System-Reinigung
-   - **[8]** Windows-Dienste
-   - **[9]** Backup & Wiederherstellung
-   - **[10]** Windows Updates
-   - **[11]** Hilfe & Informationen
-   - **[12]** Sprache ändern
-   - **[Q]** Beenden
+
+### Optimierungen
+- **[1]** Privatsphäre & Telemetrie
+- **[2]** Performance-Optimierung
+- **[3]** Registry Tweaks (Explorer, Taskbar, etc.)
+- **[4]** Netzwerk-Optimierung
+- **[5]** Disk-Optimierung (SSD/HDD)
+- **[6]** Windows-Dienste optimieren
+
+### Konfigurations-Profile
+- **[7]** Profile (Gaming, Privacy, Performance, Balanced, SSD)
+
+### System-Verwaltung
+- **[8]** Software-Installation
+- **[9]** System-Reinigung
+- **[10]** Backup & Wiederherstellung
+- **[11]** Windows Updates
+
+### Informationen & Einstellungen
+- **[12]** System-Dashboard anzeigen
+- **[13]** Logs anzeigen
+- **[14]** Hilfe & Informationen
+- **[15]** Sprache ändern
+
+**[Q]** Beenden
 
 ## ⚠️ Wichtige Hinweise
 
