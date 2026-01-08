@@ -1,84 +1,93 @@
 # ChillTweak
 
-Ein modularer Windows-Optimierer, der dir hilft, dein System zu optimieren und anzupassen.
+A modular Windows optimizer that helps you optimize and customize your system.
 
 ## 🚀 Features
 
-- 🔒 **Privatsphäre**: Deaktiviere Windows-Telemetrie und Tracking
-- ⚡ **Performance**: Optimiere Windows für bessere Leistung
-- 📦 **Software**: Installiere häufig benötigte Programme automatisch
-- 🧹 **Reinigung**: Entferne temporäre Dateien und Windows-Update-Cache
-- 💾 **Backup**: Erstelle Systemsicherungen (coming soon)
-- 🌍 **Mehrsprachig**: Unterstützt Deutsch und Englisch
-- 🛡️ **Sicherheit**: Verbessere die Windows-Sicherheitseinstellungen
+- 🔒 **Privacy**: Disable Windows telemetry and tracking
+- ⚡ **Performance**: Optimize Windows for better performance
+- 📦 **Software**: Automatically install commonly needed programs
+- 🧹 **Cleanup**: Remove temporary files and Windows Update cache
+- 💾 **Backup**: Create system backups with encryption
+- 🌍 **Multilingual**: Supports English and German
+- 🛡️ **Security**: Improve Windows security settings
 
 ## 📥 Installation
 
-### Einfache Installation (Empfohlen)
+### ⚡ One-Click Installation (Recommended)
 
-1. Öffne PowerShell als Administrator
-2. Führe folgenden Befehl aus:
+Open PowerShell as Administrator and run this command:
+
+```powershell
+irm https://raw.githubusercontent.com/einspommes/chillTweak/main/get.ps1 | iex
+```
+
+That's it! ChillTweak will automatically:
+- ✅ Download and install
+- ✅ Create desktop shortcut
+- ✅ Create start script
+- ✅ Optionally start directly
+
+### Alternative Installation
+
+1. Open PowerShell as Administrator
+2. Run the following command:
 ```powershell
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/einspommes/chillTweak/main/install.ps1" -UseBasicParsing | Invoke-Expression
 ```
-3. Folge den Anweisungen auf dem Bildschirm
 
-Das Installationsprogramm wird:
-- ChillTweak in dein Benutzerverzeichnis installieren
-- Eine Desktop-Verknüpfung erstellen
-- Ein Start-Skript erstellen
+### Manual Installation
 
-### Manuelle Installation
+1. Download the repository
+2. Extract it to a folder of your choice
+3. Run `chillTweak.ps1` as Administrator
 
-1. Lade das Repository herunter
-2. Entpacke es in einen Ordner deiner Wahl
-3. Führe `chillTweak.ps1` als Administrator aus
+## 🎮 Usage
 
-## 🎮 Verwendung
-
-1. Starte ChillTweak über die Desktop-Verknüpfung (Rechtsklick → Als Administrator ausführen)
-2. Wähle im Hauptmenü die gewünschte Option:
-   - 1️⃣ Privatsphäre
+1. Start ChillTweak via the desktop shortcut (Right-click → Run as Administrator)
+2. Choose the desired option from the main menu:
+   - 1️⃣ Privacy
    - 2️⃣ Performance
    - 3️⃣ Software
-   - 4️⃣ Reinigung
+   - 4️⃣ Cleanup
    - 5️⃣ Backup
-   - 6️⃣ Hilfe
-   - 7️⃣ Sprache
-   - 8️⃣ Updates
-   - Q️⃣ Beenden
+   - 6️⃣ Windows Services
+   - 7️⃣ Help
+   - 8️⃣ Language
+   - 9️⃣ Updates
+   - Q️⃣ Exit
 
-## ⚠️ Wichtige Hinweise
+## ⚠️ Important Notes
 
-- ChillTweak benötigt **Administratorrechte**
-- Erstelle einen **Backup** vor größeren Änderungen
-- Einige Funktionen erfordern einen **Neustart**
-- Das Tool ist in **aktiver Entwicklung**
+- ChillTweak requires **Administrator rights**
+- Create a **backup** before making major changes
+- Some functions require a **restart**
+- The tool is in **active development**
 
-## 🛠️ Technische Details
+## 🛠️ Technical Details
 
-- Geschrieben in PowerShell
-- Modularer Aufbau für einfache Erweiterbarkeit
-- Automatische Winget-Installation bei Bedarf
-- JSON-basierte Konfiguration
-- Ausführliche Fehlerbehandlung und Logging
+- Written in PowerShell
+- Modular structure for easy extensibility
+- Automatic Winget installation when needed
+- JSON-based configuration
+- Comprehensive error handling and logging
 
-## 🤝 Mitwirken
+## 🤝 Contributing
 
-Beiträge sind willkommen! Du kannst:
-- Fehler melden
-- Neue Features vorschlagen
-- Pull Requests einreichen
+Contributions are welcome! You can:
+- Report bugs
+- Suggest new features
+- Submit pull requests
 
-## 📜 Lizenz
+## 📜 License
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert.
+This project is licensed under the MIT License.
 
-## 🙏 Danksagung
+## 🙏 Acknowledgments
 
-- Dank an alle Mitwirkenden
-- Inspiriert von verschiedenen Windows-Optimierungstools
-- Dank an die PowerShell-Community
+- Thanks to all contributors
+- Inspired by various Windows optimization tools
+- Thanks to the PowerShell community
 
 ---
 

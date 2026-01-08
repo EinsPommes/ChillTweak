@@ -1,14 +1,14 @@
 param([switch]$TestMode)
 
-# chillTweak - Ein modularer Windows Tweaker
+# chillTweak - A modular Windows Tweaker
 # Version: 1.0
 
-# Basis-URL für Module
+# Base URL for modules
 $baseUrl = "https://raw.githubusercontent.com/einspommes/chillTweak/main"
 
-# Funktion zum Herunterladen von Modulen
+# Function to download modules
 function Initialize-Modules {
-    # Erstelle Modulverzeichnisse
+    # Create module directories
     $moduleDirs = @(
         "modules/core",
         "modules/ui",
@@ -22,7 +22,7 @@ function Initialize-Modules {
         }
     }
 
-    # Module herunterladen
+    # Download modules
     $moduleFiles = @(
         "modules/core/Config.ps1",
         "modules/ui/Menu.ps1",
@@ -39,10 +39,10 @@ function Initialize-Modules {
 
         try {
             Invoke-WebRequest -Uri $moduleUrl -OutFile $localPath -UseBasicParsing
-            Write-Host "[+] Modul heruntergeladen: $module" -ForegroundColor Green
+            Write-Host "[+] Module downloaded: $module" -ForegroundColor Green
         }
         catch {
-            Write-Host "[!] Fehler beim Herunterladen von $module" -ForegroundColor Red
+            Write-Host "[!] Error downloading $module" -ForegroundColor Red
             Write-Host $_.Exception.Message -ForegroundColor Red
             return $false
         }
@@ -51,7 +51,7 @@ function Initialize-Modules {
     return $true
 }
 
-# Prüfe ob Module lokal existieren, wenn nicht, lade sie herunter
+# Check if modules exist locally, if not, download them
 $modulesExist = $true
 $moduleFiles = @(
     "modules/core/Config.ps1",
@@ -71,44 +71,44 @@ foreach ($module in $moduleFiles) {
 }
 
 if (-not $modulesExist) {
-    Write-Host "[*] Module werden heruntergeladen..." -ForegroundColor Cyan
+    Write-Host "[*] Downloading modules..." -ForegroundColor Cyan
     if (-not (Initialize-Modules)) {
-        Write-Host "[!] Fehler beim Initialisieren der Module" -ForegroundColor Red
+        Write-Host "[!] Error initializing modules" -ForegroundColor Red
         Exit
     }
 }
 
-# Globale Variablen
+# Global variables
 $script:primaryColor = "Magenta"
 $script:secondaryColor = "White"
-$script:CurrentLanguage = "de"
+$script:CurrentLanguage = "en"
 $script:ConfigPath = "$env:USERPROFILE\Documents\chillTweak_config.json"
 
-# Module laden
+# Load modules
 foreach ($module in $moduleFiles) {
     if (-not (Test-Path $module)) {
-        Write-Host "[!] Modul nicht gefunden: $module" -ForegroundColor Red
+        Write-Host "[!] Module not found: $module" -ForegroundColor Red
         Exit
     }
     try {
         . $module
-        Write-Host "[+] Modul geladen: $module" -ForegroundColor Green
+        Write-Host "[+] Module loaded: $module" -ForegroundColor Green
     }
     catch {
-        Write-Host "[!] Fehler beim Laden von $module" -ForegroundColor Red
+        Write-Host "[!] Error loading $module" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
         Exit
     }
 }
 
-# Hauptprogramm
+# Main program
 try {
     Test-AdminRights
     Import-Config
     
     do {
         Show-Menu
-        $choice = Read-Host "`nWaehle eine Option"
+        $choice = Read-Host "`nChoose an option"
         
         switch ($choice) {
             "1" { Disable-Telemetry }
@@ -121,19 +121,19 @@ try {
             "8" { Set-Language; Save-Config }
             "9" { Update-Windows }
             "Q" { break }
-            default { Write-Host "[!] Ungueltige Eingabe" -ForegroundColor Red }
+            default { Write-Host "[!] Invalid input" -ForegroundColor Red }
         }
         
         if ($choice -ne "Q") {
-            Write-Host "`nWeiter mit beliebiger Taste..." -ForegroundColor $script:secondaryColor
+            Write-Host "`nPress any key to continue..." -ForegroundColor $script:secondaryColor
             $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
         }
     } while ($choice -ne "Q")
     
-    Write-Host "Programm beendet." -ForegroundColor $script:primaryColor
+    Write-Host "Program terminated." -ForegroundColor $script:primaryColor
 }
 catch {
-    Write-Host "[!] Fehler aufgetreten" -ForegroundColor Red
+    Write-Host "[!] An error occurred" -ForegroundColor Red
     Write-Host $_.Exception.Message -ForegroundColor Red
     Exit
 }

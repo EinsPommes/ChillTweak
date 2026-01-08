@@ -1,14 +1,14 @@
-# Software-Installationsfunktionen
+# Software installation functions
 function Install-CommonSoftware {
     try {
-        Write-Host "`n[*] Installiere haeufig benoetigte Software..." -ForegroundColor $script:primaryColor
+        Write-Host "`n[*] Installing commonly needed software..." -ForegroundColor $script:primaryColor
         
-        # Pruefen ob Winget installiert ist
+        # Check if Winget is installed
         if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
             Install-Winget
         }
         
-        # Liste der zu installierenden Programme
+        # List of programs to install
         $software = @(
             "Mozilla.Firefox",
             "VideoLAN.VLC",
@@ -22,28 +22,28 @@ function Install-CommonSoftware {
         
         foreach ($app in $software) {
             try {
-                Write-Host "[*] Installiere $app..." -ForegroundColor $script:secondaryColor
+                Write-Host "[*] Installing $app..." -ForegroundColor $script:secondaryColor
                 winget install --id $app --accept-source-agreements --accept-package-agreements --silent
-                Write-Host "[+] $app erfolgreich installiert" -ForegroundColor $script:secondaryColor
+                Write-Host "[+] $app successfully installed" -ForegroundColor $script:secondaryColor
             }
             catch {
-                Write-Host "[!] Fehler bei der Installation von $app" -ForegroundColor Red
+                Write-Host "[!] Error installing $app" -ForegroundColor Red
                 Write-Host $_.Exception.Message -ForegroundColor Red
                 continue
             }
         }
         
-        Write-Host "[+] Software-Installation abgeschlossen" -ForegroundColor $script:secondaryColor
+        Write-Host "[+] Software installation completed" -ForegroundColor $script:secondaryColor
     }
     catch {
-        Write-Host "[!] Fehler bei der Software-Installation" -ForegroundColor Red
+        Write-Host "[!] Error during software installation" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
 
 function Install-Winget {
     try {
-        Write-Host "[*] Installiere Winget..." -ForegroundColor $script:primaryColor
+        Write-Host "[*] Installing Winget..." -ForegroundColor $script:primaryColor
         
         # Download Winget
         $wingetUrl = "https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
@@ -51,16 +51,16 @@ function Install-Winget {
         
         Invoke-WebRequest -Uri $wingetUrl -OutFile $wingetPath
         
-        # Installiere Winget
+        # Install Winget
         Add-AppxPackage -Path $wingetPath
         
         # Cleanup
         Remove-Item $wingetPath -Force
         
-        Write-Host "[+] Winget erfolgreich installiert" -ForegroundColor $script:secondaryColor
+        Write-Host "[+] Winget successfully installed" -ForegroundColor $script:secondaryColor
     }
     catch {
-        Write-Host "[!] Fehler bei der Winget-Installation" -ForegroundColor Red
+        Write-Host "[!] Error installing Winget" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }

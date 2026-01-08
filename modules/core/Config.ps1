@@ -41,12 +41,12 @@ function Save-Config {
             }
         }
 
-        # Konfiguration speichern
+        # Save configuration
         $config | ConvertTo-Json -Depth 4 | Set-Content $script:ConfigPath -Force -Encoding UTF8
-        Write-Host "[+] Konfiguration gespeichert" -ForegroundColor Green
+        Write-Host "[+] Configuration saved" -ForegroundColor Green
     }
     catch {
-        Write-Host "[!] Fehler beim Speichern der Konfiguration" -ForegroundColor Red
+        Write-Host "[!] Error saving configuration" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
@@ -57,56 +57,56 @@ function Import-Config {
         if (Test-Path $script:ConfigPath) {
             $config = Get-Content $script:ConfigPath -Raw | ConvertFrom-Json
             
-            # Grundeinstellungen
+            # Basic settings
             $script:CurrentLanguage = $config.Language
             $script:primaryColor = $config.Theme.Primary
             $script:secondaryColor = $config.Theme.Secondary
             
-            # Backup-Einstellungen
+            # Backup settings
             $script:BackupSettings = @{
                 DefaultPath = $ExecutionContext.InvokeCommand.ExpandString($config.Backup.DefaultPath)
                 Encryption = $config.Backup.Encryption
                 MaxBackups = $config.Backup.MaxBackups
             }
             
-            # Performance-Einstellungen
+            # Performance settings
             $script:PerformanceSettings = $config.Performance
             
-            # Datenschutz-Einstellungen
+            # Privacy settings
             $script:PrivacySettings = $config.Privacy
             
-            # Aufräum-Einstellungen
+            # Cleanup settings
             $script:CleanupSettings = $config.Cleanup
             
-            # Update-Einstellungen
+            # Update settings
             $script:UpdateSettings = $config.Updates
             
-            # Weitere Einstellungen
+            # Additional settings
             $script:CustomSoftware = $config.CustomSoftware
             $script:LastBackupPath = $config.LastBackupPath
             $script:LogRotation = $config.LogRotation
         }
         else {
-            # Standardkonfiguration erstellen
+            # Create default configuration
             Save-Config
         }
     }
     catch {
-        Write-Host "[!] Fehler beim Laden der Konfiguration" -ForegroundColor Red
+        Write-Host "[!] Error loading configuration" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
 
 function Set-Language {
-    Write-Host "`nSprache wählen / Choose language:" -ForegroundColor $script:primaryColor
-    Write-Host "[1] Deutsch" -ForegroundColor $script:secondaryColor
-    Write-Host "[2] English" -ForegroundColor $script:secondaryColor
+    Write-Host "`nChoose language:" -ForegroundColor $script:primaryColor
+    Write-Host "[1] English" -ForegroundColor $script:secondaryColor
+    Write-Host "[2] Deutsch" -ForegroundColor $script:secondaryColor
     
-    $choice = Read-Host "`nWähle eine Option / Choose an option"
+    $choice = Read-Host "`nChoose an option"
     switch ($choice) {
-        "1" { $script:CurrentLanguage = "de" }
-        "2" { $script:CurrentLanguage = "en" }
-        default { Write-Host "[!] Ungültige Eingabe / Invalid input" -ForegroundColor Red }
+        "1" { $script:CurrentLanguage = "en" }
+        "2" { $script:CurrentLanguage = "de" }
+        default { Write-Host "[!] Invalid input" -ForegroundColor Red }
     }
 }
 
@@ -188,19 +188,19 @@ function Get-Translation {
     )
     try {
         if (-not $script:Translations.ContainsKey($script:CurrentLanguage)) {
-            Write-Host "[!] Sprache '$script:CurrentLanguage' nicht gefunden, verwende 'en'" -ForegroundColor Yellow
+            Write-Host "[!] Language '$script:CurrentLanguage' not found, using 'en'" -ForegroundColor Yellow
             $script:CurrentLanguage = "en"
         }
         
         if (-not $script:Translations[$script:CurrentLanguage].ContainsKey($Key)) {
-            Write-Host "[!] Übersetzung für '$Key' nicht gefunden" -ForegroundColor Yellow
+            Write-Host "[!] Translation for '$Key' not found" -ForegroundColor Yellow
             return $Key
         }
         
         return $script:Translations[$script:CurrentLanguage][$Key]
     }
     catch {
-        Write-Host "[!] Fehler beim Laden der Übersetzung" -ForegroundColor Red
+        Write-Host "[!] Error loading translation" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
         return $Key
     }

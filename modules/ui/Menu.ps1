@@ -22,37 +22,37 @@ function Show-Banner {
         Write-Host "$(Get-Translation 'Banner_RAM'): $ram GB" -ForegroundColor $script:primaryColor
     }
     catch {
-        Write-Host "[!] Fehler beim Laden der Systeminformationen" -ForegroundColor Red
+        Write-Host "[!] Error loading system information" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
 
 function Show-Menu {
     Show-Banner
-    Write-Host "`n=== chillTweak MenÜ ===" -ForegroundColor $script:primaryColor
-    Write-Host "[1] Privatsphaere" -ForegroundColor $script:secondaryColor
+    Write-Host "`n=== ChillTweak Menu ===" -ForegroundColor $script:primaryColor
+    Write-Host "[1] Privacy" -ForegroundColor $script:secondaryColor
     Write-Host "[2] Performance" -ForegroundColor $script:secondaryColor
     Write-Host "[3] Software" -ForegroundColor $script:secondaryColor
-    Write-Host "[4] Reinigung" -ForegroundColor $script:secondaryColor
+    Write-Host "[4] Cleanup" -ForegroundColor $script:secondaryColor
     Write-Host "[5] Backup" -ForegroundColor $script:secondaryColor
-    Write-Host "[6] Windows-Dienste" -ForegroundColor $script:secondaryColor
-    Write-Host "[7] Hilfe" -ForegroundColor $script:secondaryColor
-    Write-Host "[8] Sprache" -ForegroundColor $script:secondaryColor
+    Write-Host "[6] Windows Services" -ForegroundColor $script:secondaryColor
+    Write-Host "[7] Help" -ForegroundColor $script:secondaryColor
+    Write-Host "[8] Language" -ForegroundColor $script:secondaryColor
     Write-Host "[9] Updates" -ForegroundColor $script:secondaryColor
-    Write-Host "[Q] Beenden" -ForegroundColor $script:secondaryColor
+    Write-Host "[Q] Exit" -ForegroundColor $script:secondaryColor
 }
 
 function Show-Progress {
     param (
         [string]$Activity,
         [int]$PercentComplete,
-        [string]$Status = "In Bearbeitung..."
+        [string]$Status = "Processing..."
     )
     try {
         Write-Progress -Activity $Activity -Status $Status -PercentComplete $PercentComplete
     }
     catch {
-        Write-Host "[!] Fehler beim Anzeigen des Fortschritts" -ForegroundColor Red
+        Write-Host "[!] Error displaying progress" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
@@ -70,7 +70,7 @@ function Show-Help {
         Write-Host "8. $(Get-Translation 'Menu_Updates') - $(Get-Translation 'Help_Updates')"
     }
     catch {
-        Write-Host "[!] Fehler beim Anzeigen der Hilfe" -ForegroundColor Red
+        Write-Host "[!] Error displaying help" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 } 

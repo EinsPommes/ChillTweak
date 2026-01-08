@@ -1,19 +1,19 @@
-# Cleanup-Funktionen
+# Cleanup functions
 function Clear-SystemFiles {
     try {
-        Write-Host "`n[*] Starte Systemreinigung..." -ForegroundColor $script:primaryColor
+        Write-Host "`n[*] Starting system cleanup..." -ForegroundColor $script:primaryColor
         
-        # Temporaere Dateien
+        # Temporary files
         if ($script:CleanupSettings.TempFiles) {
             Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
             Remove-Item -Path "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
-            Write-Host "[+] Temporaere Dateien entfernt" -ForegroundColor $script:secondaryColor
+            Write-Host "[+] Temporary files removed" -ForegroundColor $script:secondaryColor
         }
         
-        # Papierkorb
+        # Recycle bin
         if ($script:CleanupSettings.RecycleBin) {
             Clear-RecycleBin -Force -ErrorAction SilentlyContinue
-            Write-Host "[+] Papierkorb geleert" -ForegroundColor $script:secondaryColor
+            Write-Host "[+] Recycle bin emptied" -ForegroundColor $script:secondaryColor
         }
         
         # Windows Logs
@@ -21,7 +21,7 @@ function Clear-SystemFiles {
             wevtutil el | ForEach-Object {
                 wevtutil cl "$_" 2>&1 | Out-Null
             }
-            Write-Host "[+] Windows Logs bereinigt" -ForegroundColor $script:secondaryColor
+            Write-Host "[+] Windows logs cleaned" -ForegroundColor $script:secondaryColor
         }
         
         # Windows Update Cache
@@ -30,38 +30,38 @@ function Clear-SystemFiles {
             Stop-Service -Name wuauserv -Force
             Remove-Item -Path "$updateCache\*" -Recurse -Force -ErrorAction SilentlyContinue
             Start-Service -Name wuauserv
-            Write-Host "[+] Windows Update Cache bereinigt" -ForegroundColor $script:secondaryColor
+            Write-Host "[+] Windows Update cache cleaned" -ForegroundColor $script:secondaryColor
         }
         
-        Write-Host "[+] Systemreinigung abgeschlossen" -ForegroundColor $script:secondaryColor
+        Write-Host "[+] System cleanup completed" -ForegroundColor $script:secondaryColor
     }
     catch {
-        Write-Host "[!] Fehler bei der Systemreinigung" -ForegroundColor Red
+        Write-Host "[!] Error during system cleanup" -ForegroundColor Red
         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
 
 function Clear-TempFiles {
-    Write-Host "[*] Loesche temporaere Dateien..." -ForegroundColor $primaryColor
+    Write-Host "[*] Deleting temporary files..." -ForegroundColor $script:primaryColor
     try {
         Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
         Remove-Item -Path "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
-        Write-Host "[✓] Temporaere Dateien geloescht" -ForegroundColor $secondaryColor
+        Write-Host "[+] Temporary files deleted" -ForegroundColor $script:secondaryColor
     }
     catch {
-        Write-Host "[!] Fehler beim Loeschen temporaerer Dateien: $_" -ForegroundColor Red
+        Write-Host "[!] Error deleting temporary files: $_" -ForegroundColor Red
     }
 }
 
 function Clear-UpdateCache {
-    Write-Host "[*] Leere Windows Update Cache..." -ForegroundColor $primaryColor
+    Write-Host "[*] Clearing Windows Update cache..." -ForegroundColor $script:primaryColor
     try {
         Stop-Service -Name wuauserv
         Remove-Item -Path "C:\Windows\SoftwareDistribution\*" -Recurse -Force -ErrorAction SilentlyContinue
         Start-Service -Name wuauserv
-        Write-Host "[✓] Update Cache geleert" -ForegroundColor $secondaryColor
+        Write-Host "[+] Update cache cleared" -ForegroundColor $script:secondaryColor
     }
     catch {
-        Write-Host "[!] Fehler beim Leeren des Update Cache: $_" -ForegroundColor Red
+        Write-Host "[!] Error clearing update cache: $_" -ForegroundColor Red
     }
 } 
